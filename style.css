@@ -54,10 +54,10 @@ header{
 main{
     display: flex;
     height: 100%;
-    width: 90dvw;
+    width: 100dvw;
 }
 .contatos{
-    width: 45dvw;
+    width: 80%;
     display: flex;
     
 }
@@ -74,10 +74,10 @@ main{
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 100%;
     height: auto;
     gap: 16px;
-    padding-block: 8px;
     padding-inline: 8px;
 }
 .header-contatos h1{
@@ -87,12 +87,11 @@ main{
 
 .opcoes-contatos{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
+    gap: 8dvw;
     width: 100%;
     height: 50px;
-    gap: 10vh;
-    padding-left: 16px;
 }
 .opcoes-contatos img{
     width: 32px;
@@ -103,7 +102,6 @@ main{
     justify-content: center;
     align-items: center;
     gap: 20px;
-    width: 1000px;
     height: 50px;
 }
 
@@ -140,8 +138,9 @@ main{
 menu{
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 4px;
-    width: 90%;
+    width: 95%;
 }
 li{
     list-style: none;
@@ -159,19 +158,21 @@ li:hover{
     background-color: #10362a;
     color: #d8fcd2;
 }
-.main-mensagens{
+.main-contatos{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     width: 100%;
     height: auto;
+    gap: 24px;
+    overflow-y: auto;
+    scrollbar-color: var(--underline-color) var(--contatos-color);
 }
 .arquivadas{
     display: flex;
-    padding-left: 10%;
     align-items: center;
     gap: 24px;
-    padding-block: 16px;
 }
 .arquivadas-icon{
     font-size: 32px;
@@ -181,10 +182,88 @@ li:hover{
     font-size: 24px;
     color: var(--text-color);
 }
+.contatos-box{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-x: auto;
+}
+.contato{
+    display: flex;
+    color: white;
+    justify-content: space-around;
+    align-items: center;
+    width: 95%;
+    transition: 0.2s;
+}
+.mensagem-contato{
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    overflow-x: auto;
+}
+.mensagem-contato img{
+    width: 48px;
+}
+.info-contato h2{
+    font-size: 16px;
+    font-weight: 400;
+    padding-block: 4px;
+}
+.info-contato p{
+    font-size: 8px;
+}
+.contato:hover{
+    background-color: #2d2e2e;
+    border-radius: 10px;
+    padding-block: 4px;
+    padding-inline: 4px;
+}
+.mensagens{
+    display: flex;
+    width: 100%;
+}
 .container-mensagens{
     display: flex;
     flex-direction: column;
-    background-color: red;
     width: 100%;
     height: 100dvh;
+}
+.header-mensagens{
+    display: flex;
+    padding-inline: 16px;
+    padding-block: 16px;
+    background-color: var(--contatos-color);
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+.dados-contato{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: white;
+}
+.info-contato h3{
+    font-size: 16px;
+    font-weight: 400;
+}
+.icons-header-mensagem{
+    display: flex;
+    gap: 24px;
+}
+.icons-mensagem{
+    color: white;
+    font-size: 20px;
+    padding-inline: 4px;
+}
+.ligacao{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.opcoes-ligacao{
+    color: white;
+    font-size: 12px;
 }
