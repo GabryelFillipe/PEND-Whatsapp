@@ -64,6 +64,11 @@ header {
     font-size: 20px;
     transition: 0.5s;
 }
+.foto-perfil{
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
+}
 
 .group {
     -webkit-text-stroke: white;
@@ -429,9 +434,13 @@ li:hover {
     top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
+}
+
+.modal-overlay.visivel {
+    display: flex;
 }
 
 .modal-login {
