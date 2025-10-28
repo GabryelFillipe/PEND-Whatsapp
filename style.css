@@ -1,24 +1,29 @@
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
-:root{
+
+:root {
     --menu-lateral-color: #1d1f1f;
     --underline-color: #333636;
     --contatos-color: #161717;
     --text-color: #fafafa;
     --mensagem-bg: #242626;
 }
-body{
+
+body {
+    position: relative;
     display: flex;
+    justify-content: center;
     flex-direction: row;
     height: 100dvh;
     width: 100dvw;
     background-color: var(--menu-lateral-color);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
 }
-header{
+
+header {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -28,52 +33,61 @@ header{
     /* padding-block:8; */
     background-color: var(--menu-lateral-color);
 }
-.opcoes{
+
+.opcoes {
     display: flex;
     flex-direction: column;
     gap: 8px;
     height: auto;
     padding-block: 12px;
 }
-.config{
+
+.config {
     display: flex;
     flex-direction: column;
     height: auto;
     gap: 8px;
 }
-.meta{
+
+.meta {
     border-top: 2px solid var(--underline-color);
     padding-top: 8px;
     width: 32px;
 }
-.config img{
+
+.config img {
     padding-block: 4px;
 }
-.icons{
+
+.icons {
     color: #a6a6a6;
     font-size: 20px;
     transition: 0.5s;
 }
-.group{
+
+.group {
     -webkit-text-stroke: white;
     -webkit-text-stroke-width: 0.5px;
     color: transparent;
 }
-.icons:hover{
+
+.icons:hover {
     color: #fafafa;
 }
 
-main{
+main {
     display: flex;
     height: 100%;
     width: 100dvw;
 }
-.contatos{
+
+.contatos {
     width: 30%;
     display: flex;
-    
+
 }
-.container-contatos{
+
+.container-contatos {
     display: flex;
     flex-direction: column;
     background-color: var(--contatos-color);
@@ -82,7 +96,7 @@ main{
     width: 100%;
 }
 
-.header-contatos{
+.header-contatos {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -92,12 +106,13 @@ main{
     gap: 16px;
     padding-inline: 8px;
 }
-.header-contatos h1{
+
+.header-contatos h1 {
     color: white;
     font-size: 24px;
 }
 
-.opcoes-contatos{
+.opcoes-contatos {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -105,11 +120,13 @@ main{
     width: 100%;
     height: 50px;
 }
-.opcoes-contatos img{
+
+.opcoes-contatos img {
     width: 32px;
     height: 32px;
 }
-.icon-header-contato{
+
+.icon-header-contato {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -117,7 +134,7 @@ main{
     height: 50px;
 }
 
-.buscar-conversa{
+.buscar-conversa {
     display: flex;
     align-items: center;
     background-color: #2d2e2e;
@@ -129,12 +146,13 @@ main{
     gap: 8px;
     border: 1px;
 }
-.buscar-conversa img{
+
+.buscar-conversa img {
     width: 20px;
     height: 20px;
 }
 
-.buscar-conversa input{
+.buscar-conversa input {
     position: relative;
     background-color: #2d2e2e;
     width: 95%;
@@ -148,14 +166,15 @@ main{
     color: white;
 }
 
-menu{
+menu {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 4px;
     width: 95%;
 }
-li{
+
+li {
     list-style: none;
     border: 2px solid #2d2e2e;
     border-radius: 20px;
@@ -163,16 +182,19 @@ li{
     padding-inline: 8px;
     font-size: 12px;
 }
-a{
+
+a {
     color: var(--text-color);
     text-decoration: none;
 }
-li:hover{
+
+li:hover {
     border: 2px solid #284a3f;
     background-color: #10362a;
     color: #d8fcd2;
 }
-.main-contatos{
+
+.main-contatos {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -184,27 +206,32 @@ li:hover{
     scrollbar-width: none;
     transition: 0.5s;
 }
-.arquivadas{
+
+.arquivadas {
     display: flex;
     align-items: center;
     gap: 24px;
 }
-.arquivadas-icon{
+
+.arquivadas-icon {
     font-size: 32px;
     color: #a3a3a3;
 }
-.arquivadas p{
+
+.arquivadas p {
     font-size: 24px;
     color: var(--text-color);
 }
-.contatos-box{
+
+.contatos-box {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 16px;
 
 }
-.contato{
+
+.contato {
     display: flex;
     color: white;
     justify-content: space-around;
@@ -212,34 +239,41 @@ li:hover{
     width: 95%;
     transition: 0.2s;
 }
-.mensagem-contato{
+
+.mensagem-contato {
     display: flex;
     gap: 16px;
     align-items: center;
     overflow-x: auto;
 }
-.mensagem-contato img{
+
+.mensagem-contato img {
     width: 48px;
 }
-.info-contato h2{
+
+.info-contato h2 {
     font-size: 16px;
     font-weight: 400;
     padding-block: 4px;
 }
-.info-contato p{
+
+.info-contato p {
     font-size: 8px;
 }
-.contato:hover{
+
+.contato:hover {
     background-color: #2d2e2e;
     border-radius: 10px;
     padding-block: 4px;
     padding-inline: 4px;
 }
-.mensagens{
+
+.mensagens {
     display: flex;
     width: 100%;
 }
-.container-mensagens{
+
+.container-mensagens {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -248,7 +282,8 @@ li:hover{
     background-image: url(./img/whatsapp-background.jpg);
     padding-bottom: 16px;
 }
-.header-mensagens{
+
+.header-mensagens {
     display: flex;
     padding-inline: 16px;
     padding-block: 16px;
@@ -257,35 +292,42 @@ li:hover{
     justify-content: space-between;
     align-items: center;
 }
-.dados-contato{
+
+.dados-contato {
     display: flex;
     align-items: center;
     gap: 16px;
     color: white;
 }
-.info-contato h3{
+
+.info-contato h3 {
     font-size: 16px;
     font-weight: 400;
 }
-.icons-header-mensagem{
+
+.icons-header-mensagem {
     display: flex;
     gap: 24px;
 }
-.icons-mensagem{
+
+.icons-mensagem {
     color: white;
     font-size: 20px;
     padding-inline: 4px;
 }
-.ligacao{
+
+.ligacao {
     display: flex;
     align-items: center;
     gap: 4px;
 }
-.opcoes-ligacao{
+
+.opcoes-ligacao {
     color: white;
     font-size: 12px;
 }
-.main-mensagens{
+
+.main-mensagens {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -302,7 +344,8 @@ li:hover{
     scrollbar-color: var(--underline-color) var(--contatos-color);
     scrollbar-width: none;
 }
-.box-mensagens{
+
+.box-mensagens {
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -310,19 +353,22 @@ li:hover{
     height: 100%;
     padding-inline: 16px;
     padding-top: 16px;
-    
+
 }
-.mensagem{
+
+.mensagem {
     display: flex;
     max-width: 50%;
     gap: 8px;
     height: auto;
 }
-.mensagem img{
+
+.mensagem img {
     width: 32px;
     height: 32px;
 }
-.mensagem-texto{
+
+.mensagem-texto {
     background-color: var(--mensagem-bg);
     height: auto;
     display: flex;
@@ -333,15 +379,18 @@ li:hover{
     border-radius: 8px;
     border-top-left-radius: 0;
 }
-.mensagem-texto h4{
+
+.mensagem-texto h4 {
     color: plum;
     font-size: 16px;
     font-weight: 400;
 }
-.mensagem-texto span{
+
+.mensagem-texto span {
     font-size: 12px;
 }
-.digitar{
+
+.digitar {
     width: 95%;
     height: 6dvh;
     display: flex;
@@ -353,19 +402,75 @@ li:hover{
     border-radius: 100px;
     background-color: var(--mensagem-bg);
 }
-.digitar input{
+
+.digitar input {
     background-color: var(--mensagem-bg);
     border: none;
     all: unset;
     height: 4dvh;
     color: white;
 }
-.digitar-itens{
+
+.digitar-itens {
     display: flex;
     align-items: center;
     gap: 12px;
 }
-.audio{
+
+.audio {
     display: flex;
     align-items: center;
+}
+
+.modal-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-login {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 80%;
+    padding-top: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+    background-color: var(--contatos-color);
+    border-radius: 25px;
+}
+
+.cardUser{
+    width: 300px;
+    height: 200px;
+    display: flex;
+    background-color: #fafafa;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+}
+
+.userImg {
+    width: 200px;
+    height: 150px;
+    border-radius: 15px;
+}
+
+.spanModal{
+    position: absolute;
+    color: white;
+    z-index: 1000;
+    top: 10%;
+    font-size: 32px;
 }
