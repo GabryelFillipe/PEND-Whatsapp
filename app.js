@@ -1,23 +1,12 @@
 'use script'
 
-async function carregarContatos(user) {
-    console.log("Buscando contatos para o usuário:", user)
-    const url = ` https://pbe-api-whatsapp.onrender.com/v1/whatsapp/user/contatos/${user}`
-}
-
-function criarContatos(contatos) {
-
-}
-
 async function carregarUsuarios() {
-    try {
-        const url = `https://corsproxy.io/?url=https://pbe-api-whatsapp.onrender.com/v1/whatsapp/users`
-        const response = await fetch(url)
-        const dados = await response.json()
-        return dados
-    } catch (error) {
-        console.error("Falha ao carregar usuários:", error)
-    }
+
+    const url = `https://corsproxy.io/?url=https://pbe-api-whatsapp.onrender.com/v1/whatsapp/users`
+    const response = await fetch(url)
+    const dados = await response.json()
+    return dados
+
 }
 
 function criarCardUsuariio(usuario) {
@@ -68,7 +57,6 @@ async function criarModalLogin() {
 
     modalLogin.addEventListener('click', (event) => {
         const clickedCard = event.target.closest('.cardUser')
-
         if (clickedCard) {
             const userId = clickedCard.dataset.userId
 
@@ -81,25 +69,100 @@ async function criarModalLogin() {
             }
 
             fecharModalLogin()
-            carregarContatos(userId)
+            criarAreaContatos(userId)
+
         }
     })
 
     const dados = await carregarUsuarios()
-    
-    if(dados && dados.users){
+
+
+
+    if (dados && dados.users) {
         const users = dados.users
-    
+
         users.forEach(usuario => {
             const cardUser = criarCardUsuariio(usuario)
             modalLogin.appendChild(cardUser)
         })
     } else {
-        console.error("Não foi possível renderizar os cards de usuário.")
     }
+
 
     modalOverlay.appendChild(modalLogin)
     document.body.appendChild(modalOverlay)
+}
+
+async function carregarContatos(id) {
+
+    const usuarios = await carregarUsuarios()
+
+    const dadosUsuario = usuarios.users
+
+    const usuario = dadosUsuario.find(user => user.id === Number(id))
+
+
+    const url = `https://corsproxy.io/?url=https://pbe-api-whatsapp.onrender.com/v1/whatsapp/user/contatos/${usuario.number}`
+    const response = await fetch(url)
+    const contatos = await response.json()
+
+
+    return contatos
+
+}
+
+async function criarAreaContatos(id) {
+
+    const containerContatos = document.getElementById('contatos-box')
+    containerContatos.replaceChildren('')
+
+    const dados = await carregarContatos(id)
+
+    if (dados && dados.contatos) {
+
+        const contatos = dados.contatos
+
+        contatos.forEach(contato => {
+            const cardContato = criarCardContato(contato)
+            containerContatos.appendChild(cardContato)
+        })
+
+    }
+
+}
+
+function criarCardContato(contato) {
+    const containerContatos = document.getElementById('contatos-box')
+
+    const contatoCard = document.createElement('div')
+    contatoCard.classList.add('contato')
+
+    const dadosContato = document.createElement('div')
+    dadosContato.classList.add('mensagem-contato')
+
+    const contatoImg = document.createElement('img')
+    contatoImg.src = './img/11987876567.png'
+
+    const infoContato = document.createElement('div')
+    infoContato.classList.add('info-contato')
+
+    const nomeContato = document.createElement('h2')
+    nomeContato.textContent = contato.name
+
+    const ultimaMensagem = document.createElement('p')
+    ultimaMensagem.textContent = 'Ultima Mensagem'
+
+    const dataMensagem = document.createElement('span')
+    dataMensagem.textContent = "17/10/2025"
+
+    infoContato.appendChild(nomeContato)
+    infoContato.appendChild(ultimaMensagem)
+    dadosContato.appendChild(contatoImg)
+    dadosContato.appendChild(infoContato)
+    contatoCard.appendChild(dadosContato)
+    contatoCard.appendChild(dataMensagem)
+
+    return contatoCard
 }
 
 const botaoAbrir = document.getElementById('abrir-modal-perfil')

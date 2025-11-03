@@ -233,29 +233,37 @@ li:hover {
     display: flex;
     flex-direction: column;
     gap: 16px;
-
+    padding: 0;
 }
 
 .contato {
     display: flex;
     color: white;
-    justify-content: space-around;
     align-items: center;
+    justify-content: space-between;
     width: 95%;
     transition: 0.2s;
+    padding-inline: 32px;
 }
 
 .mensagem-contato {
     display: flex;
     gap: 16px;
     align-items: center;
-    overflow-x: auto;
 }
 
 .mensagem-contato img {
     width: 48px;
+    height: 48px;
+    border-radius: 100%;
+}
+.contato span{
+    font-size: 8px;
 }
 
+.info-contato{
+    text-align: center;
+}
 .info-contato h2 {
     font-size: 16px;
     font-weight: 400;
