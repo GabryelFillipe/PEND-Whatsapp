@@ -132,10 +132,10 @@ async function criarAreaContatos(id) {
 }
 
 function criarCardContato(contato) {
-    const containerContatos = document.getElementById('contatos-box')
 
     const contatoCard = document.createElement('div')
     contatoCard.classList.add('contato')
+    contatoCard.id = contato.number
 
     const dadosContato = document.createElement('div')
     dadosContato.classList.add('mensagem-contato')
@@ -165,10 +165,30 @@ function criarCardContato(contato) {
     return contatoCard
 }
 
+function escolherContato() {
+
+    const containerContatos = document.getElementById('contatos-box')
+
+    containerContatos.addEventListener('click', function (contato) {
+
+        const contatoEscolhido = contato.target.closest('.contato')
+        
+        const idContato = contatoEscolhido.id
+
+        carregarMensagensContato(idContato)
+
+    })
+
+}
+
+function carregarMensagensContato(contato) {
+
+}
+
 const botaoAbrir = document.getElementById('abrir-modal-perfil')
 
 if (botaoAbrir) {
     botaoAbrir.addEventListener('click', abrirModalLogin)
 }
-
+escolherContato()
 criarModalLogin()
