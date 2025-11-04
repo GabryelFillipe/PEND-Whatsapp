@@ -91,18 +91,22 @@ async function criarModalLogin() {
 
     modalOverlay.appendChild(modalLogin)
     document.body.appendChild(modalOverlay)
+
+    escolherContato()
 }
 
 async function carregarContatos(id) {
 
+    id = Number(id)
+    console.log(id)
     const usuarios = await carregarUsuarios()
 
     const dadosUsuario = usuarios.users
 
-    const usuario = dadosUsuario.find(user => user.id === Number(id))
+    const usuario = dadosUsuario.find(user => user.id === id)
+    const numeroUsuario = usuario.number
 
-
-    const url = `https://corsproxy.io/?url=https://pbe-api-whatsapp.onrender.com/v1/whatsapp/user/contatos/${usuario.number}`
+    const url = `https://corsproxy.io/?url=https://pbe-api-whatsapp.onrender.com/v1/whatsapp/user/contatos/${numeroUsuario}`
     const response = await fetch(url)
     const contatos = await response.json()
 
@@ -165,23 +169,46 @@ function criarCardContato(contato) {
     return contatoCard
 }
 
-function escolherContato() {
+async function escolherContato() {
 
     const containerContatos = document.getElementById('contatos-box')
 
-    containerContatos.addEventListener('click', function (contato) {
+    containerContatos.addEventListener('click', async function (contato) {
 
         const contatoEscolhido = contato.target.closest('.contato')
         
         const idContato = contatoEscolhido.id
 
+        const infoContato = await carregarContatos(idContato)
+
+        carregarInfoContato(infoContato)
         carregarMensagensContato(idContato)
 
     })
 
 }
 
+function carregarInfoContato(contato){
+
+    const dadosContato = document.getElementById('dados-contato')
+
+    const contatoImg = document.getElementById('foto-contato')
+    contatoImg.src = contato.image
+
+    const infoContato = document.getElementById('info-contato')
+
+    const nomeContato = document.getElementById('nome-contato')
+    nomeContato.textContent = contato.name
+
+    const visto = document.getElementById('visto')
+
+    
+
+}
+
 function carregarMensagensContato(contato) {
+
+
 
 }
 
@@ -190,5 +217,4 @@ const botaoAbrir = document.getElementById('abrir-modal-perfil')
 if (botaoAbrir) {
     botaoAbrir.addEventListener('click', abrirModalLogin)
 }
-escolherContato()
 criarModalLogin()
