@@ -1,151 +1,84 @@
-'use script'
+'use strict'
 
 async function carregarUsuarios() {
-
     const url = `https://corsproxy.io/?url=https://pbe-api-whatsapp.onrender.com/v1/whatsapp/users`
-    const response = await fetch(url)
-    const dados = await response.json()
-    return dados
-
-}
-
-function criarCardUsuariio(usuario) {
-    const cardUser = document.createElement('div')
-    cardUser.classList.add('cardUser')
-    cardUser.dataset.userId = usuario.id
-
-    const userImg = document.createElement('img')
-    userImg.classList.add('userImg')
-    userImg.src = './img/' + usuario['profile-image']
-
-    const userName = document.createElement('p')
-    userName.classList.add('userName')
-    userName.textContent = usuario.account
-
-    cardUser.appendChild(userImg)
-    cardUser.appendChild(userName)
-
-    return cardUser
-}
-
-function abrirModalLogin() {
-    const modal = document.querySelector('.modal-overlay')
-    if (modal) {
-        modal.classList.add('visivel')
-    }
-}
-
-function fecharModalLogin() {
-    const modal = document.querySelector('.modal-overlay')
-    if (modal) {
-        modal.classList.remove('visivel')
-    }
-}
-
-async function criarModalLogin() {
-    const modalOverlay = document.createElement('div')
-    modalOverlay.classList.add('modal-overlay')
-
-    const modalLogin = document.createElement('div')
-    modalLogin.classList.add('modal-login')
-
-    modalOverlay.addEventListener('click', (event) => {
-        if (event.target === modalOverlay) {
-            fecharModalLogin()
+    try {
+        const response = await fetch(url)
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar usuários: ${response.statusText}`)
         }
-    })
-
-    modalLogin.addEventListener('click', (event) => {
-        const clickedCard = event.target.closest('.cardUser')
-        if (clickedCard) {
-            const userId = clickedCard.dataset.userId
-
-            const imagemDoCard = clickedCard.querySelector('.userImg')
-            const imagemDoPerfilHeader = document.getElementById('abrir-modal-perfil')
-            const novoSrc = imagemDoCard.src
-
-            if (imagemDoPerfilHeader) {
-                imagemDoPerfilHeader.src = novoSrc
-            }
-
-            fecharModalLogin()
-            criarAreaContatos(userId)
-
-        }
-    })
-
-    const dados = await carregarUsuarios()
-
-
-
-    if (dados && dados.users) {
-        const users = dados.users
-
-        users.forEach(usuario => {
-            const cardUser = criarCardUsuariio(usuario)
-            modalLogin.appendChild(cardUser)
-        })
-    } else {
+        const dados = await response.json()
+        return dados.users || [] 
+    } catch (error) {
+        console.error('Falha em carregarUsuarios:', error)
+        return []
     }
-
-
-    modalOverlay.appendChild(modalLogin)
-    document.body.appendChild(modalOverlay)
-
-    escolherContato()
 }
 
-async function carregarContatos(id) {
 
-    id = Number(id)
-    console.log(id)
-    const usuarios = await carregarUsuarios()
-
-    const dadosUsuario = usuarios.users
-
-    const usuario = dadosUsuario.find(user => user.id === id)
-    const numeroUsuario = usuario.number
-
+async function carregarContatos(numeroUsuario) {
     const url = `https://corsproxy.io/?url=https://pbe-api-whatsapp.onrender.com/v1/whatsapp/user/contatos/${numeroUsuario}`
-    const response = await fetch(url)
-    const contatos = await response.json()
-
-
-    return contatos
-
-}
-
-async function criarAreaContatos(id) {
-
-    const containerContatos = document.getElementById('contatos-box')
-    containerContatos.replaceChildren('')
-
-    const dados = await carregarContatos(id)
-
-    if (dados && dados.contatos) {
-
-        const contatos = dados.contatos
-
-        contatos.forEach(contato => {
-            const cardContato = criarCardContato(contato)
-            containerContatos.appendChild(cardContato)
-        })
-
+    try {
+        const response = await fetch(url)
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar contatos: ${response.statusText}`)
+        }
+        const dados = await response.json()
+        return dados.contatos || []
+    } catch (error) {
+        console.error('Falha em carregarContatos:', error)
+        return []
     }
-
 }
 
-function criarCardContato(contato) {
+async function carregarMensagensDoContato(numeroContato) {
+    console.log(`Buscando mensagens para o contato: ${numeroContato}`)
+    // const url = `.../v1/whatsapp/messages/${numeroContato}`
+    // const response = await fetch(url)
+    // const dados = await response.json()
+    // return dados.messages || []
 
-    const contatoCard = document.createElement('div')
-    contatoCard.classList.add('contato')
-    contatoCard.id = contato.number
+
+    return [
+        { type: 'received', content: 'Olá, tudo bem?' },
+        { type: 'sent', content: 'Tudo ótimo, e você?' }
+    ]
+}
+
+
+function criarCartaoUsuario(usuario) {
+    const cartaoUsuario = document.createElement('div')
+    cartaoUsuario.classList.add('cardUser')
+    cartaoUsuario.dataset.userId = usuario.id
+
+    const imagemUsuario = document.createElement('img')
+    imagemUsuario.classList.add('userImg')
+    imagemUsuario.src = './img/' + usuario['profile-image']
+    imagemUsuario.alt = `Foto de perfil de ${usuario.account}`
+
+    const nomeUsuario = document.createElement('p')
+    nomeUsuario.classList.add('userName')
+    nomeUsuario.textContent = usuario.account
+
+    cartaoUsuario.appendChild(imagemUsuario)
+    cartaoUsuario.appendChild(nomeUsuario)
+
+    return cartaoUsuario
+}
+
+
+function criarCartaoContato(contato) {
+    const cartaoContato = document.createElement('div')
+    cartaoContato.classList.add('contato')
+    cartaoContato.id = contato.number
 
     const dadosContato = document.createElement('div')
     dadosContato.classList.add('mensagem-contato')
 
-    const contatoImg = document.createElement('img')
-    contatoImg.src = './img/11987876567.png'
+    const imagemContato = document.createElement('img')
+
+    imagemContato.src = './img/11987876567.png'
+    imagemContato.alt = `Foto de perfil de ${contato.name}`
 
     const infoContato = document.createElement('div')
     infoContato.classList.add('info-contato')
@@ -155,66 +88,165 @@ function criarCardContato(contato) {
 
     const ultimaMensagem = document.createElement('p')
     ultimaMensagem.textContent = 'Ultima Mensagem'
-
     const dataMensagem = document.createElement('span')
     dataMensagem.textContent = "17/10/2025"
 
     infoContato.appendChild(nomeContato)
     infoContato.appendChild(ultimaMensagem)
-    dadosContato.appendChild(contatoImg)
+    dadosContato.appendChild(imagemContato)
     dadosContato.appendChild(infoContato)
-    contatoCard.appendChild(dadosContato)
-    contatoCard.appendChild(dataMensagem)
+    cartaoContato.appendChild(dadosContato)
+    cartaoContato.appendChild(dataMensagem)
 
-    return contatoCard
+    return cartaoContato
 }
 
-async function escolherContato() {
+function criarModalLogin() {
+    const modalOverlay = document.createElement('div')
+    modalOverlay.classList.add('modal-overlay')
 
-    const containerContatos = document.getElementById('contatos-box')
+    const modalLogin = document.createElement('div')
+    modalLogin.classList.add('modal-login')
 
-    containerContatos.addEventListener('click', async function (contato) {
+    modalOverlay.appendChild(modalLogin)
+    document.body.appendChild(modalOverlay)
 
-        const contatoEscolhido = contato.target.closest('.contato')
-        
-        const idContato = contatoEscolhido.id
+    return { modalOverlay, modalLogin }
+}
 
-        const infoContato = await carregarContatos(idContato)
 
-        carregarInfoContato(infoContato)
-        carregarMensagensContato(idContato)
+function abrirModalLogin() {
+    document.querySelector('.modal-overlay')?.classList.add('visivel')
+}
 
+function fecharModalLogin() {
+    document.querySelector('.modal-overlay')?.classList.remove('visivel')
+}
+
+
+function atualizarHeaderPerfil(urlImagem) {
+    const imagemDoPerfilHeader = document.getElementById('abrir-modal-perfil')
+    if (imagemDoPerfilHeader) {
+        imagemDoPerfilHeader.src = urlImagem
+    }
+}
+
+
+function carregarInfoContato(contato) {
+    document.getElementById('foto-contato').src = './img/11987876567.png'
+    document.getElementById('nome-contato').textContent = contato.name
+}
+
+function exibirMensagens(mensagens) {
+    const areaMensagens = document.getElementById('area-mensagens')
+    areaMensagens.replaceChildren('')
+
+    mensagens.forEach(msg => {
+        const balaoMensagem = document.createElement('div')
+        balaoMensagem.classList.add('mensagem', msg.type)
+        balaoMensagem.textContent = msg.content
+        areaMensagens.appendChild(balaoMensagem)
+    })
+}
+
+
+async function aoSelecionarUsuario(evento, usuarios, modalOverlay) {
+    const cartaoClicado = evento.target.closest('.cardUser')
+    if (!cartaoClicado) return
+    const idUsuario = cartaoClicado.dataset.userId
+
+    const usuarioSelecionado = usuarios.find(user => user.id == idUsuario)
+    if (!usuarioSelecionado) return
+
+    const imagemDoCard = cartaoClicado.querySelector('.userImg').src
+    atualizarHeaderPerfil(imagemDoCard)
+
+    fecharModalLogin()
+
+    await criarAreaContatos(usuarioSelecionado)
+}
+
+
+async function aoSelecionarContato(evento, listaDeContatos) {
+    const contatoEscolhido = evento.target.closest('.contato')
+    if (!contatoEscolhido) return
+
+    const idContato = contatoEscolhido.id // Este é o NÚMERO do contato
+
+    const infoContato = listaDeContatos.find(c => c.number == idContato)
+    if (!infoContato) return
+
+    carregarInfoContato(infoContato)
+
+    const mensagens = await carregarMensagensDoContato(idContato)
+    exibirMensagens(mensagens)
+}
+
+
+async function popularModalLogin(elementoModal) {
+    const usuarios = await carregarUsuarios()
+    if (usuarios.length === 0) {
+        elementoModal.textContent = 'Nenhum usuário encontrado.'
+        return []
+    }
+
+    usuarios.forEach(usuario => {
+        const cartaoUsuario = criarCartaoUsuario(usuario)
+        elementoModal.appendChild(cartaoUsuario)
     })
 
+    return usuarios
 }
 
-function carregarInfoContato(contato){
+function configurarListenersModal(modalOverlay, modalLogin, usuarios) {
+    modalOverlay.addEventListener('click', (evento) => {
+        if (evento.target === modalOverlay) {
+            fecharModalLogin()
+        }
+    })
 
-    const dadosContato = document.getElementById('dados-contato')
-
-    const contatoImg = document.getElementById('foto-contato')
-    contatoImg.src = contato.image
-
-    const infoContato = document.getElementById('info-contato')
-
-    const nomeContato = document.getElementById('nome-contato')
-    nomeContato.textContent = contato.name
-
-    const visto = document.getElementById('visto')
-
-    
-
+    modalLogin.addEventListener('click', (evento) => {
+        aoSelecionarUsuario(evento, usuarios, modalOverlay)
+    })
 }
 
-function carregarMensagensContato(contato) {
-
-
-
+function configurarListenerContatos(containerContatos, listaDeContatos) {
+    containerContatos.addEventListener('click', (evento) => {
+        aoSelecionarContato(evento, listaDeContatos)
+    })
 }
 
-const botaoAbrir = document.getElementById('abrir-modal-perfil')
+async function criarAreaContatos(usuario) {
+    const containerContatos = document.getElementById('contatos-box')
+    containerContatos.replaceChildren('')
 
-if (botaoAbrir) {
-    botaoAbrir.addEventListener('click', abrirModalLogin)
+    const dados = await carregarContatos(usuario.number)
+
+    if (dados && dados.length > 0) {
+        dados.forEach(contato => {
+            const cardContato = criarCartaoContato(contato)
+            containerContatos.appendChild(cardContato)
+        })
+
+        configurarListenerContatos(containerContatos, dados)
+    } else {
+        containerContatos.textContent = 'Nenhum contato encontrado.'
+    }
 }
-criarModalLogin()
+
+
+async function inicializarAplicativo() {
+    const { modalOverlay, modalLogin } = criarModalLogin()
+
+    const usuarios = await popularModalLogin(modalLogin)
+
+    configurarListenersModal(modalOverlay, modalLogin, usuarios)
+
+    const botaoAbrir = document.getElementById('abrir-modal-perfil')
+    if (botaoAbrir) {
+        botaoAbrir.addEventListener('click', abrirModalLogin)
+    }
+}
+
+// Inicia a aplicação
+inicializarAplicativo()

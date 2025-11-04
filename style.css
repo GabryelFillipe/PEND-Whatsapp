@@ -65,9 +65,9 @@ header {
     transition: 0.5s;
 }
 .foto-perfil{
-    width: 32px;
-    height: 32px;
-    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
 }
 
 .group {
@@ -311,6 +311,11 @@ li:hover {
     align-items: center;
     gap: 16px;
     color: white;
+}
+.dados-contato img{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
 }
 
 .info-contato h3 {
