@@ -1,5 +1,7 @@
 'use strict'
 
+let numeroUsuarioEscolhido = ""
+
 async function carregarUsuarios() {
     const url = `https://corsproxy.io/?url=https://pbe-api-whatsapp.onrender.com/v1/whatsapp/users`
     try {
@@ -8,9 +10,8 @@ async function carregarUsuarios() {
             throw new Error(`Erro ao buscar usuários: ${response.statusText}`)
         }
         const dados = await response.json()
-        return dados.users || [] 
+        return dados.users || []
     } catch (error) {
-        console.error('Falha em carregarUsuarios:', error)
         return []
     }
 }
@@ -26,23 +27,16 @@ async function carregarContatos(numeroUsuario) {
         const dados = await response.json()
         return dados.contatos || []
     } catch (error) {
-        console.error('Falha em carregarContatos:', error)
         return []
     }
 }
 
-async function carregarMensagensDoContato(numeroContato) {
-    console.log(`Buscando mensagens para o contato: ${numeroContato}`)
-    // const url = `.../v1/whatsapp/messages/${numeroContato}`
-    // const response = await fetch(url)
-    // const dados = await response.json()
-    // return dados.messages || []
-
-
-    return [
-        { type: 'received', content: 'Olá, tudo bem?' },
-        { type: 'sent', content: 'Tudo ótimo, e você?' }
-    ]
+async function carregarMensagensDoContato(nomeContato) {
+    const url = `https://corsproxy.io/?url=https://pbe-api-whatsapp.onrender.com/v1/whatsapp/user/mensagem/contato?user=${numeroUsuarioEscolhido}&contato=${nomeContato}`
+    const response = await fetch(url)
+    const dados = await response.json()
+    const mensagens = dados.mensagens
+    return mensagens
 }
 
 
@@ -53,7 +47,8 @@ function criarCartaoUsuario(usuario) {
 
     const imagemUsuario = document.createElement('img')
     imagemUsuario.classList.add('userImg')
-    imagemUsuario.src = './img/' + usuario['profile-image']
+    
+    imagemUsuario.src = `https://ui-avatars.com/api/?name=${usuario.account}&background=random`
     imagemUsuario.alt = `Foto de perfil de ${usuario.account}`
 
     const nomeUsuario = document.createElement('p')
@@ -70,14 +65,14 @@ function criarCartaoUsuario(usuario) {
 function criarCartaoContato(contato) {
     const cartaoContato = document.createElement('div')
     cartaoContato.classList.add('contato')
-    cartaoContato.id = contato.number
+    cartaoContato.id = contato.name
 
     const dadosContato = document.createElement('div')
     dadosContato.classList.add('mensagem-contato')
 
     const imagemContato = document.createElement('img')
-
-    imagemContato.src = './img/11987876567.png'
+    
+    imagemContato.src = `https://ui-avatars.com/api/?name=${contato.name}&background=random`
     imagemContato.alt = `Foto de perfil de ${contato.name}`
 
     const infoContato = document.createElement('div')
@@ -133,19 +128,47 @@ function atualizarHeaderPerfil(urlImagem) {
 
 
 function carregarInfoContato(contato) {
-    document.getElementById('foto-contato').src = './img/11987876567.png'
+    document.getElementById('foto-contato').src = `https://ui-avatars.com/api/?name=${contato.name}&background=random`
     document.getElementById('nome-contato').textContent = contato.name
 }
 
 function exibirMensagens(mensagens) {
-    const areaMensagens = document.getElementById('area-mensagens')
-    areaMensagens.replaceChildren('')
+    const boxMensagens = document.getElementById('box-mensagens')
+    boxMensagens.replaceChildren('')
 
-    mensagens.forEach(msg => {
+    mensagens.forEach(mensagem => {
         const balaoMensagem = document.createElement('div')
-        balaoMensagem.classList.add('mensagem', msg.type)
-        balaoMensagem.textContent = msg.content
-        areaMensagens.appendChild(balaoMensagem)
+        balaoMensagem.classList.add('mensagem')
+
+        const mensagemContainer = document.createElement('div')
+        mensagemContainer.classList.add('mensagem-texto')
+
+        const contato = document.createElement('h4')
+        contato.textContent = mensagem.sender
+
+        const textoMensagem = document.createElement('span')
+        textoMensagem.textContent = mensagem.content
+
+        mensagemContainer.appendChild(contato)
+        mensagemContainer.appendChild(textoMensagem)
+
+        if (mensagem.sender === 'me') {
+            balaoMensagem.classList.add('enviada')
+            mensagemContainer.classList.add('enviada')
+            balaoMensagem.appendChild(mensagemContainer)
+        } else {
+            balaoMensagem.classList.add('recebida')
+            mensagemContainer.classList.add('recebida')
+
+            const profile = document.createElement('img')
+            profile.src = `https://ui-avatars.com/api/?name=${mensagem.sender}&background=random`
+            profile.alt = `Foto de ${mensagem.sender}`
+
+            balaoMensagem.appendChild(profile)
+            balaoMensagem.appendChild(mensagemContainer)
+        }
+
+        boxMensagens.appendChild(balaoMensagem)
     })
 }
 
@@ -158,6 +181,7 @@ async function aoSelecionarUsuario(evento, usuarios, modalOverlay) {
     const usuarioSelecionado = usuarios.find(user => user.id == idUsuario)
     if (!usuarioSelecionado) return
 
+    numeroUsuarioEscolhido = usuarioSelecionado.number
     const imagemDoCard = cartaoClicado.querySelector('.userImg').src
     atualizarHeaderPerfil(imagemDoCard)
 
@@ -170,16 +194,18 @@ async function aoSelecionarUsuario(evento, usuarios, modalOverlay) {
 async function aoSelecionarContato(evento, listaDeContatos) {
     const contatoEscolhido = evento.target.closest('.contato')
     if (!contatoEscolhido) return
-
-    const idContato = contatoEscolhido.id // Este é o NÚMERO do contato
-
-    const infoContato = listaDeContatos.find(c => c.number == idContato)
+    const nomeContato = contatoEscolhido.id
+    const infoContato = listaDeContatos.find(contato => contato.name == nomeContato)
     if (!infoContato) return
 
     carregarInfoContato(infoContato)
 
-    const mensagens = await carregarMensagensDoContato(idContato)
-    exibirMensagens(mensagens)
+    const mensagens = await carregarMensagensDoContato(nomeContato)
+    if (mensagens) {
+        exibirMensagens(mensagens)
+    } else {
+        console.error('Não foi possível carregar as mensagens.')
+    }
 }
 
 
@@ -189,7 +215,6 @@ async function popularModalLogin(elementoModal) {
         elementoModal.textContent = 'Nenhum usuário encontrado.'
         return []
     }
-
     usuarios.forEach(usuario => {
         const cartaoUsuario = criarCartaoUsuario(usuario)
         elementoModal.appendChild(cartaoUsuario)
@@ -248,5 +273,4 @@ async function inicializarAplicativo() {
     }
 }
 
-// Inicia a aplicação
 inicializarAplicativo()

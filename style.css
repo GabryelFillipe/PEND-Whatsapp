@@ -64,10 +64,12 @@ header {
     font-size: 20px;
     transition: 0.5s;
 }
-.foto-perfil{
-    width: 50px;
-    height: 50px;
+
+.foto-perfil {
+    width: 44px;
+    height: 44px;
     border-radius: 100%;
+    padding: 0;
 }
 
 .group {
@@ -257,13 +259,15 @@ li:hover {
     height: 48px;
     border-radius: 100%;
 }
-.contato span{
+
+.contato span {
     font-size: 8px;
 }
 
-.info-contato{
+.info-contato {
     text-align: center;
 }
+
 .info-contato h2 {
     font-size: 16px;
     font-weight: 400;
@@ -312,7 +316,8 @@ li:hover {
     gap: 16px;
     color: white;
 }
-.dados-contato img{
+
+.dados-contato img {
     width: 50px;
     height: 50px;
     border-radius: 100%;
@@ -376,18 +381,33 @@ li:hover {
 
 .mensagem {
     display: flex;
-    max-width: 50%;
+    width: 100%;
     gap: 8px;
     height: auto;
+}
+
+.mensagem.recebida {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+
+}
+
+.mensagem.enviada {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
 }
 
 .mensagem img {
     width: 32px;
     height: 32px;
+    border-radius: 100%;
 }
 
 .mensagem-texto {
-    background-color: var(--mensagem-bg);
+    max-width: 50%;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -396,6 +416,16 @@ li:hover {
     gap: 8px;
     border-radius: 8px;
     border-top-left-radius: 0;
+    justify-content: center;
+}
+
+.mensagem-texto.recebida {
+    background-color: var(--mensagem-bg);
+
+}
+
+.mensagem-texto.enviada {
+    background-color: #144d37;
 }
 
 .mensagem-texto h4 {
@@ -471,7 +501,7 @@ li:hover {
     border-radius: 25px;
 }
 
-.cardUser{
+.cardUser {
     width: 300px;
     height: 200px;
     display: flex;
@@ -489,7 +519,7 @@ li:hover {
     border-radius: 15px;
 }
 
-.spanModal{
+.spanModal {
     position: absolute;
     color: white;
     z-index: 1000;
